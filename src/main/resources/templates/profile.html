@@ -3,41 +3,42 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Perfil</title>
+	<title th:text="${tituloPagina}">Perfil</title>
 	<link
 		href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
 		rel="stylesheet"
 		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
 		crossorigin="anonymous">
-	<link rel="stylesheet" href="/css/profile.css?v=2">
+	<link rel="stylesheet" href="/css/profile.css?v=3">
 </head>
-<body class="theme-dark">
+<body th:class="${darkTheme} ? 'theme-dark' : 'theme-light'">
 	<main class="container py-5">
 		<section class="profile-card mx-auto">
 			<div class="profile-header">
 				<div class="profile-main">
-					<h1 class="profile-title">Perfil</h1>
+					<div class="profile-title-wrap">
+						<h1 class="profile-title" th:text="${tituloPagina}">Perfil</h1>
+						<a th:if="${darkTheme}" th:href="|${currentPath}?theme=light|" class="theme-toggle">Tema claro</a>
+						<a th:if="${!darkTheme}" th:href="|${currentPath}?theme=dark|" class="theme-toggle">Tema oscuro</a>
+					</div>
 					<ul class="nav nav-tabs mb-3" role="tablist">
 				<li class="nav-item" role="presentation">
 					<a class="nav-link"
 					   th:classappend="${activeName} ? 'active'"
-					   th:href="@{/profile}">
-						Nombre
-					</a>
+					   th:href="@{/profile}"
+					   th:text="${labelNombre}">Nombre</a>
 				</li>
 				<li class="nav-item" role="presentation">
 					<a class="nav-link"
 					   th:classappend="${activeEmail} ? 'active'"
-					   th:href="@{/profile/email}">
-						Email
-					</a>
+					   th:href="@{/profile/email}"
+					   th:text="${labelEmail}">Email</a>
 				</li>
 				<li class="nav-item" role="presentation">
 					<a class="nav-link"
 					   th:classappend="${activeGithub} ? 'active'"
-					   th:href="@{/profile/github}">
-						Github
-					</a>
+					   th:href="@{/profile/github}"
+					   th:text="${labelGithub}">Github</a>
 				</li>
 				<li class="nav-item dropdown" role="presentation">
 					<a class="nav-link dropdown-toggle"
@@ -47,7 +48,7 @@
 					   role="button"
 					   aria-expanded="false">
 						<span th:if="${selectedTabNum != null}" th:text="|Tab ${selectedTabNum}|">Tab 1</span>
-						<span th:if="${selectedTabNum == null}">Dropdown</span>
+						<span th:if="${selectedTabNum == null}" th:text="${labelDropdown}">Dropdown</span>
 					</a>
 					<ul class="dropdown-menu">
 						<li th:each="tab, iterStat : ${dropdownTabs}">
@@ -58,14 +59,14 @@
 					</ul>
 					<div class="tab-content">
 				<div th:if="${activeName}" class="tab-pane fade show active">
-					<h2 class="tab-title" th:text="${name}">Nombre</h2>
+					<h2 class="tab-title" th:text="${usuario.nombre}">Nombre</h2>
 				</div>
 				<div th:if="${activeEmail}" class="tab-pane fade show active">
-					<a class="tab-link" th:href="'mailto:' + ${email}" th:text="${email}">email</a>
+					<a class="tab-link" th:href="'mailto:' + ${usuario.email}" th:text="${usuario.email}">email</a>
 				</div>
 				<div th:if="${activeGithub}" class="tab-pane fade show active">
-					<a class="tab-link" th:href="${github}" target="_blank" rel="noreferrer">
-						<span th:text="${github}">github</span>
+					<a class="tab-link" th:href="${usuario.github}" target="_blank" rel="noreferrer">
+						<span th:text="${usuario.github}">github</span>
 					</a>
 				</div>
 				<div th:if="${activeTools}" class="tab-pane fade show active">
@@ -77,7 +78,7 @@
 					</div>
 				</div>
 				<div class="profile-avatar-wrap">
-					<img class="avatar" th:src="${avatarUrl}" alt="Avatar">
+					<img class="avatar" th:src="${usuario.avatarUrl}" th:alt="${usuario.nombre}">
 				</div>
 			</div>
 		</section>
