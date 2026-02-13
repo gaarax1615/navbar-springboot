@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Perfil</title>
+	<link
+		href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+		rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+		crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/profile.css">
+</head>
+<body class="bg-light">
+	<main class="container py-5">
+		<section class="profile-card mx-auto">
+			<div class="profile-header">
+				<div class="profile-main">
+					<h1 class="profile-title">Perfil</h1>
+					<ul class="nav nav-tabs mb-3" role="tablist">
+				<li class="nav-item" role="presentation">
+					<a class="nav-link"
+					   th:classappend="${activeName} ? 'active'"
+					   th:href="@{/profile}">
+						Nombre
+					</a>
+				</li>
+				<li class="nav-item" role="presentation">
+					<a class="nav-link"
+					   th:classappend="${activeEmail} ? 'active'"
+					   th:href="@{/profile/email}">
+						Email
+					</a>
+				</li>
+				<li class="nav-item" role="presentation">
+					<a class="nav-link"
+					   th:classappend="${activeGithub} ? 'active'"
+					   th:href="@{/profile/github}">
+						Github
+					</a>
+				</li>
+				<li class="nav-item dropdown" role="presentation">
+					<a class="nav-link dropdown-toggle"
+					   th:classappend="${activeTools} ? 'active'"
+					   data-bs-toggle="dropdown"
+					   href="#"
+					   role="button"
+					   aria-expanded="false">
+						<span th:if="${selectedTabNum != null}" th:text="|Tab ${selectedTabNum}|">Tab 1</span>
+						<span th:if="${selectedTabNum == null}">Dropdown</span>
+					</a>
+					<ul class="dropdown-menu">
+						<li th:each="tab, iterStat : ${dropdownTabs}">
+							<a class="dropdown-item" th:href="@{/profile/tools/{num}(num=${iterStat.count})}" th:text="${tab}">Tab</a>
+						</li>
+					</ul>
+				</li>
+					</ul>
+					<div class="tab-content">
+				<div th:if="${activeName}" class="tab-pane fade show active">
+					<h2 class="tab-title" th:text="${name}">Nombre</h2>
+				</div>
+				<div th:if="${activeEmail}" class="tab-pane fade show active">
+					<a class="tab-link" th:href="'mailto:' + ${email}" th:text="${email}">email</a>
+				</div>
+				<div th:if="${activeGithub}" class="tab-pane fade show active">
+					<a class="tab-link" th:href="${github}" target="_blank" rel="noreferrer">
+						<span th:text="${github}">github</span>
+					</a>
+				</div>
+				<div th:if="${activeTools}" class="tab-pane fade show active">
+					<p class="text-muted mb-2" th:if="${selectedTabNum == null}">Haz clic en un ítem del menú Dropdown.</p>
+					<p class="mb-2" th:if="${selectedTabNum != null}">
+						Has seleccionado: <strong th:text="|Tab ${selectedTabNum}|">Tab</strong>
+					</p>
+				</div>
+					</div>
+				</div>
+				<div class="profile-avatar-wrap">
+					<img class="avatar" th:src="${avatarUrl}" alt="Avatar">
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+		crossorigin="anonymous"></script>
+</body>
+</html>
